@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
@@ -31,7 +32,7 @@ public abstract class ServicesBase {
 		mContext = context;
 	}
 
-	protected <T> T doGet(String url, List<NameValuePair> params, ResponseHandler<T> responseHandler, int flags) {
+	protected <T> T doGet(String url, List<NameValuePair> params, ResponseHandler<T> responseHandler) {
 		if (params != null) {
 			if (!url.endsWith("?")) {
 				url += "?";
@@ -42,10 +43,10 @@ public abstract class ServicesBase {
 
 		Log.i("Request URL: " + url);
 
-		return doRequest(new HttpGet(url), responseHandler, flags);
+		return doRequest(new HttpGet(url), responseHandler);
 	}
 
-	protected <T> T doPost(String url, List<NameValuePair> params, ResponseHandler<T> responseHandler, int flags) {
+	protected <T> T doPost(String url, List<NameValuePair> params, ResponseHandler<T> responseHandler) {
 		HttpPost request = new HttpPost(url);
 		HttpEntity entity;
 
@@ -66,10 +67,34 @@ public abstract class ServicesBase {
 
 		Log.i("Request URL: " + url);
 
-		return doRequest(request, responseHandler, flags);
+		return doRequest(request, responseHandler);
 	}
 
-	private <T> T doRequest(HttpRequestBase request, ResponseHandler<T> responseHandler, int flags) {
+	protected <T> T doPost(String url, String postBody, ResponseHandler<T> responseHandler) {
+		HttpPost request = new HttpPost(url);
+		HttpEntity entity;
+
+		try {
+			entity = new StringEntity(postBody);
+		}
+		catch (UnsupportedEncodingException e) {
+			Log.e("Couldn't encode params", e);
+			return null;
+		}
+
+		Header header = entity.getContentType();
+		if (header != null) {
+			request.addHeader(header);
+		}
+
+		request.setEntity(entity);
+
+		Log.i("Request URL: " + url);
+
+		return doRequest(request, responseHandler);
+	}
+
+	private <T> T doRequest(HttpRequestBase request, ResponseHandler<T> responseHandler) {
 		mHttpRequest = request;
 
 		AndroidHttpClient client = AndroidHttpClient.newInstance(getUserAgent(), mContext);
