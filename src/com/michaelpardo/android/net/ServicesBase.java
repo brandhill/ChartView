@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.http.AndroidHttpClient;
+import android.os.Build;
 
 import com.michaelpardo.android.util.Log;
 
@@ -107,7 +108,7 @@ public abstract class ServicesBase {
 			return client.execute(mHttpRequest, responseHandler);
 		}
 		catch (IOException e) {
-			Log.e("Server request failed", e);
+			Log.e("Server request failed.", e);
 		}
 		finally {
 			client.close();
@@ -129,9 +130,9 @@ public abstract class ServicesBase {
 		}
 		catch (Exception e) {
 			versionName = "1.0";
-			appName = "MichaelPardoApplication";
+			appName = "Application";
 		}
 
-		return appName + "/" + versionName + " (" + appName + "; MichaelPardo)";
+		return appName + "/" + versionName + " (Android; " + Build.VERSION.RELEASE + ")";
 	}
 }
