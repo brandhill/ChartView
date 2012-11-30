@@ -6,7 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Build;
 
-import com.michaelpardo.androidutils.R;
+import com.michaelpardo.android.R;
 
 public class AndroidUtils {
 	private AndroidUtils() {
