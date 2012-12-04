@@ -14,7 +14,7 @@
         </attr>
     </declare-styleable>
     <declare-styleable name="ChartView">
-        <attr name="gridLineColor" format="reference|integer" />
+        <attr name="gridLineColor" format="reference|color" />
         <attr name="gridLineWidth" format="reference|dimension" />
         <attr name="gridLinesHorizontal" format="reference|integer" />
         <attr name="gridLinesVertical" format="reference|integer" />
